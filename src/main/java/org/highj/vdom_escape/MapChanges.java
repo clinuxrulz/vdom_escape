@@ -9,7 +9,7 @@ public class MapChanges<K,A,DA> {
         this._changes = changes;
     }
 
-    public <K,A,DA> MapChanges<K,A,DA> create(Map<K,MapChange<K,A,DA>> changes) {
+    public static <K,A,DA> MapChanges<K,A,DA> create(Map<K,MapChange<K,A,DA>> changes) {
         return new MapChanges<>(changes);
     }
 
