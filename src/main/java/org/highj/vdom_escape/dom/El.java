@@ -37,4 +37,22 @@ public class El {
     ) {
         return Element.create("input", text, attributes, handlers, children);
     }
+
+    public static <HOM> Element<HOM> p(
+        LC<IncF.µ,HOM,String> text,
+        LC<IncF.µ,HOM,IMap<String,String>> attributes,
+        LC<IncF.µ,HOM,IMap<String,Consumer<DomEvent>>> handlers,
+        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+    ) {
+        return Element.create("p", text, attributes, handlers, children);
+    }
+
+    public static <HOM> Element<HOM> text(
+        LC<IncF.µ,HOM,String> text,
+        LC<IncF.µ,HOM,IMap<String,String>> attributes,
+        LC<IncF.µ,HOM,IMap<String,Consumer<DomEvent>>> handlers,
+        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+    ) {
+        return Element.create("text", text, attributes, handlers, children);
+    }
 }
