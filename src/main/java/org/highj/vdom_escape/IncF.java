@@ -1,6 +1,7 @@
 package org.highj.vdom_escape;
 
 import org.derive4j.hkt.__2;
+import org.highj.data.Map;
 import org.highj.data.Maybe;
 import org.highj.data.tuple.T2;
 import org.highj.vdom_escape.inc_f.IncFCartesian;
@@ -12,19 +13,38 @@ public interface IncF<A,B> extends __2<IncF.µ,A,B> {
 
     T2<B,IncF2<A,B>> apply(A a);
 
-    static <A,B> IncF<A,Atomic<B>> constant(Atomic<B> b) {
+    static <A,B> IncF<A,B> constant(B b, Delta<B,?> zeroDb) {
         class Util {
-            private IncF2<A,Atomic<B>> constant2 = null;
+            private IncF2<A,B> constant2 = null;
         }
         final Util util = new Util();
         util.constant2 = (Delta<A,?> da) -> T2.of(
-            Delta.<Atomic<B>,Maybe<B>>create(
-                (b2, db) -> Atomic.create(db.getOrElse(b2.value())),
-                Maybe.Nothing()
-            ),
+            zeroDb,
             util.constant2
         );
         return (A a) -> T2.of(b, util.constant2);
+    }
+
+    static <A,B> IncF<A,Atomic<B>> constantAtomic(Atomic<B> b) {
+        return constant(
+            b,
+            Delta.<Atomic<B>,Maybe<B>>create(
+                (b2, db) -> Atomic.create(db.getOrElse(b2.value())),
+                Maybe.Nothing()
+            )
+        );
+    }
+
+    static <A,B,C> IncF<A,IMap<B,C>> constantIMap(IMap<B,C> b) {
+        return constant(
+            b,
+            Delta.<IMap<B,C>,MapChanges<B,C,?>>create(
+                (b2, db) -> {
+                    throw new UnsupportedOperationException("TODO");
+                },
+                MapChanges.create(Map.empty())
+            )
+        );
     }
 
     IncFSemigroupoid semigroupoid = new IncFSemigroupoid() {};
