@@ -12,47 +12,47 @@ import java.util.function.Consumer;
  */
 public class El {
 
-    public static <HOM> Element<HOM> div(
-        LC<IncF.µ,HOM,Atomic<String>> text,
-        LC<IncF.µ,HOM,IMap<String,Atomic<String>>> attributes,
-        LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> handlers,
-        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+    public static Element div(
+        Atomic<String> text,
+        IMap<String,Atomic<String>> attributes,
+        IMap<String,Atomic<Consumer<DomEvent>>> handlers,
+        IMap<Integer,Element> children
     ) {
         return Element.create("div", text, attributes, handlers, children);
     }
 
-    public static <HOM> Element<HOM> h1(
-        LC<IncF.µ,HOM,Atomic<String>> text,
-        LC<IncF.µ,HOM,IMap<String,Atomic<String>>> attributes,
-        LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> handlers,
-        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+    public static Element h1(
+        Atomic<String> text,
+        IMap<String,Atomic<String>> attributes,
+        IMap<String,Atomic<Consumer<DomEvent>>> handlers,
+        IMap<Integer,Element> children
     ) {
         return Element.create("h1", text, attributes, handlers, children);
     }
 
-    public static <HOM> Element<HOM> input(
-        LC<IncF.µ,HOM,Atomic<String>> text,
-        LC<IncF.µ,HOM,IMap<String,Atomic<String>>> attributes,
-        LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> handlers,
-        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+    public static Element input(
+        Atomic<String> text,
+        IMap<String,Atomic<String>> attributes,
+        IMap<String,Atomic<Consumer<DomEvent>>> handlers,
+        IMap<Integer,Element> children
     ) {
         return Element.create("input", text, attributes, handlers, children);
     }
 
-    public static <HOM> Element<HOM> p(
-        LC<IncF.µ,HOM,Atomic<String>> text,
-        LC<IncF.µ,HOM,IMap<String,Atomic<String>>> attributes,
-        LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> handlers,
-        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+    public static Element p(
+        Atomic<String> text,
+        IMap<String,Atomic<String>> attributes,
+        IMap<String,Atomic<Consumer<DomEvent>>> handlers,
+        IMap<Integer,Element> children
     ) {
         return Element.create("p", text, attributes, handlers, children);
     }
 
-    public static <HOM> Element<HOM> text(
-        LC<IncF.µ,HOM,Atomic<String>> text,
-        LC<IncF.µ,HOM,IMap<String,Atomic<String>>> attributes,
-        LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> handlers,
-        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+    public static Element text(
+        Atomic<String> text,
+        IMap<String,Atomic<String>> attributes,
+        IMap<String,Atomic<Consumer<DomEvent>>> handlers,
+        IMap<Integer,Element> children
     ) {
         return Element.create("text", text, attributes, handlers, children);
     }

@@ -1,25 +1,23 @@
 package org.highj.vdom_escape.dom;
 
-import org.highj.typeclass2.category.LC;
 import org.highj.vdom_escape.Atomic;
 import org.highj.vdom_escape.IMap;
-import org.highj.vdom_escape.IncF;
 
 import java.util.function.Consumer;
 
-public class Element<HOM> {
+public class Element {
     private final String _element;
-    private final LC<IncF.µ,HOM,Atomic<String>> _text;
-    private final LC<IncF.µ,HOM,IMap<String,Atomic<String>>> _attributes;
-    private final LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> _handlers;
-    private final LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> _children;
+    private final Atomic<String> _text;
+    private final IMap<String,Atomic<String>> _attributes;
+    private final IMap<String,Atomic<Consumer<DomEvent>>> _handlers;
+    private final IMap<Integer,Element> _children;
     
     private Element(
         String element,
-        LC<IncF.µ,HOM,Atomic<String>> text,
-        LC<IncF.µ,HOM,IMap<String,Atomic<String>>> attributes,
-        LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> handlers,
-        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+        Atomic<String> text,
+        IMap<String,Atomic<String>> attributes,
+        IMap<String,Atomic<Consumer<DomEvent>>> handlers,
+        IMap<Integer,Element> children
     ) {
         this._element = element;
         this._text = text;
@@ -28,14 +26,14 @@ public class Element<HOM> {
         this._children = children;
     }
 
-    public static <HOM> Element<HOM> create(
+    public static Element create(
         String element,
-        LC<IncF.µ,HOM,Atomic<String>> text,
-        LC<IncF.µ,HOM,IMap<String,Atomic<String>>> attributes,
-        LC<IncF.µ,HOM,IMap<String,Atomic<Consumer<DomEvent>>>> handlers,
-        LC<IncF.µ,HOM,IMap<Integer,Element<HOM>>> children
+        Atomic<String> text,
+        IMap<String,Atomic<String>> attributes,
+        IMap<String,Atomic<Consumer<DomEvent>>> handlers,
+        IMap<Integer,Element> children
     ) {
-        return new Element<>(
+        return new Element(
             element,
             text,
             attributes,
@@ -48,19 +46,19 @@ public class Element<HOM> {
         return _element;
     }
 
-    public LC<IncF.µ, HOM, Atomic<String>> text() {
+    public Atomic<String> text() {
         return _text;
     }
 
-    public LC<IncF.µ, HOM, IMap<String, Atomic<String>>> attributes() {
+    public IMap<String, Atomic<String>> attributes() {
         return _attributes;
     }
 
-    public LC<IncF.µ, HOM, IMap<String, Atomic<Consumer<DomEvent>>>> handlers() {
+    public IMap<String, Atomic<Consumer<DomEvent>>> handlers() {
         return _handlers;
     }
 
-    public LC<IncF.µ, HOM, IMap<Integer, Element<HOM>>> children() {
+    public IMap<Integer, Element> children() {
         return _children;
     }
 }
