@@ -1,6 +1,12 @@
 package org.highj.vdom_escape;
 
 import org.derive4j.hkt.*;
+import org.highj.typeclass2.arrow.Category;
+import org.highj.typeclass2.arrow.Semigroupoid;
+import org.highj.vdom_escape.free_ccc.FreeCCCCCC;
+import org.highj.vdom_escape.free_ccc.FreeCCCCartesian;
+import org.highj.vdom_escape.free_ccc.FreeCCCCategory;
+import org.highj.vdom_escape.free_ccc.FreeCCCSemigroupoid;
 
 public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tensor,Hom,A,B> {
     public static final class µ {}
@@ -102,6 +108,22 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
                 return cases.lift(k);
             }
         };
+    }
+
+    public static <K,Tensor,Hom> Semigroupoid<__<__<__<µ,K>,Tensor>,Hom>> semigroupoid() {
+        return new FreeCCCSemigroupoid<K, Tensor, Hom>() {};
+    }
+
+    public static <K,Tensor,Hom> Category<__<__<__<µ,K>,Tensor>,Hom>> category() {
+        return new FreeCCCCategory<K,Tensor,Hom>() {};
+    }
+
+    public static <K,Tensor,Hom> Cartesian<__<__<__<µ,K>,Tensor>,Hom>,Tensor> cartesian() {
+        return new FreeCCCCartesian<K,Tensor,Hom>() {};
+    }
+
+    public static <K,Tensor,Hom> CCC<__<__<__<µ,K>,Tensor>,Hom>,Tensor,Hom> ccc() {
+        return new FreeCCCCCC<K,Tensor,Hom>() {};
     }
 
     public static class Eval<K,Tensor,Hom,A,B,C> {
