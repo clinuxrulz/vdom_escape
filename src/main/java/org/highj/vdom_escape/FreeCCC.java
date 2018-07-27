@@ -245,7 +245,7 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
             return _k1;
         }
 
-        public FreeCCC<K, Tensor, Hom, A, B> gk2() {
+        public FreeCCC<K, Tensor, Hom, A, B> k2() {
             return _k2;
         }
     }
