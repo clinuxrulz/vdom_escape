@@ -1,6 +1,7 @@
 package org.highj.vdom_escape;
 
 import org.derive4j.hkt.*;
+import org.highj.data.Maybe;
 import org.highj.typeclass2.arrow.Category;
 import org.highj.typeclass2.arrow.Semigroupoid;
 import org.highj.vdom_escape.free_ccc.FreeCCCCCC;
@@ -21,7 +22,7 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
         R uncurry(Uncurry<K,Tensor,Hom,?,?,B,A> uncurry);
         R fork(Fork<K,Tensor,Hom,A,?,?,B> fork);
         R exl(Exl<K,Tensor,Hom,B,?,A> exl);
-        R exr(Exr<K,Tensor,Hom,?,B,A> exr);
+        R exr(Exr<K,Tensor,Hom,B,?,A> exr);
         R identity(Identity<A,B> identity);
         R dot(Dot<K,Tensor,Hom,A,?,B> dot);
         R lift(__2<K,A,B> k);
@@ -126,6 +127,110 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
         return new FreeCCCCCC<K,Tensor,Hom>() {};
     }
 
+    public interface TensorDontDependOnK<Tensor> {
+        <A,B,K1,K2> TypeEq<__3<Tensor,K1,A,B>,__3<Tensor,K2,A,B>> typeEq();
+    }
+
+    public Maybe<__2<K,A,B>> reduceToCartesian(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian) {
+        return match(new Cases<Maybe<__2<K,A,B>>,K,Tensor,Hom,A,B>() {
+            @Override
+            public Maybe<__2<K, A, B>> eval(Eval<K, Tensor, Hom, ?, B, A> eval) {
+                return Maybe.Nothing();
+            }
+            @Override
+            public Maybe<__2<K, A, B>> curry(Curry<K, Tensor, Hom, A, ?, ?, B> curry) {
+                return Maybe.Nothing();
+            }
+            @Override
+            public Maybe<__2<K, A, B>> uncurry(Uncurry<K, Tensor, Hom, ?, ?, B, A> uncurry) {
+                return Maybe.Nothing();
+            }
+            @Override
+            public Maybe<__2<K, A, B>> fork(Fork<K, Tensor, Hom, A, ?, ?, B> fork) {
+                return reduceToCartesianFork(tensorDontDependOnK, cartesian, fork);
+            }
+            @Override
+            public Maybe<__2<K, A, B>> exl(Exl<K, Tensor, Hom, B, ?, A> exl) {
+                return reduceToCartesianExl(tensorDontDependOnK, cartesian, exl);
+            }
+            @Override
+            public Maybe<__2<K, A, B>> exr(Exr<K, Tensor, Hom, B, ?, A> exr) {
+                return reduceToCartesianExr(tensorDontDependOnK, cartesian, exr);
+            }
+            @Override
+            public Maybe<__2<K, A, B>> identity(Identity<A, B> identity) {
+                return Maybe.Just(
+                    TypeEq
+                        .<K, A, B>__2()
+                        .coerce(
+                            identity
+                                .typeEq()
+                                .symm()
+                                .<__<K, A>>lift()
+                                .coerce(cartesian.<A>identity())
+                        )
+                );
+            }
+            @Override
+            public Maybe<__2<K, A, B>> dot(Dot<K, Tensor, Hom, A, ?, B> dot) {
+                // TODO: Check for an apply this rule
+                // eval . (curry h `fork` g) = h . (id `fork` g)
+                throw new UnsupportedOperationException("TODO");
+            }
+            @Override
+            public Maybe<__2<K, A, B>> lift(__2<K, A, B> k) {
+                return Maybe.Just(k);
+            }
+        });
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D> Maybe<__2<K,A,B>> reduceToCartesianFork(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian, Fork<K,Tensor,Hom,A,C,D,B> fork) {
+        return org.highj.Hkt.asMaybe(Maybe.monad.apply2(
+            (__2<K, A, C> k1) -> (__2<K, A, D> k2) ->
+                TypeEq.<K, A, B>__2().coerce(fork.typeEq().symm().<__<K, A>>lift().coerce(
+                    tensorDontDependOnK.<C, D, K, __<__<__<µ, K>, Tensor>, Hom>>typeEq().<__<K, A>>lift().coerce(
+                        cartesian.fork(k1, k2)
+                    )
+                )),
+            fork.k1().reduceToCartesian(tensorDontDependOnK, cartesian),
+            fork.k2().reduceToCartesian(tensorDontDependOnK, cartesian)
+        ));
+    }
+
+    private static <K,Tensor,Hom,A,B,C> Maybe<__2<K,A,B>> reduceToCartesianExl(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian, Exl<K, Tensor, Hom, B, C, A> exl) {
+        return Maybe.Just(
+            TypeEq.<K, A, B>__2()
+                .coerce(
+                    exl.typeEq()
+                        .symm()
+                        .<K, B>lift2()
+                        .coerce(
+                            tensorDontDependOnK
+                                .<B, C, K, __<__<__<µ, K>, Tensor>, Hom>>typeEq()
+                                .<K, B>lift2()
+                                .coerce(cartesian.exl())
+                        )
+                )
+        );
+    }
+
+    private static <K,Tensor,Hom,A,B,C> Maybe<__2<K,A,B>> reduceToCartesianExr(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian, Exr<K,Tensor,Hom,B,C,A> exr) {
+        return Maybe.Just(
+            TypeEq.<K,A,B>__2()
+                .coerce(
+                    exr.typeEq()
+                        .symm()
+                        .<K, B>lift2()
+                        .coerce(
+                            tensorDontDependOnK
+                                .<C, B, K, __<__<__<µ, K>, Tensor>, Hom>>typeEq()
+                                .<K, B>lift2()
+                                .coerce(cartesian.exr())
+                        )
+                )
+        );
+    }
+
     public static class Eval<K,Tensor,Hom,A,B,C> {
         private final TypeEq<C,__3<Tensor, __<__<__<µ,K>,Tensor>,Hom>, __3<Hom, __<__<__<µ,K>,Tensor>,Hom>, A, B>, A>> _typeEq;
 
@@ -211,13 +316,13 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
     }
 
     public static class Exr<K,Tensor,Hom,A,B,C> {
-        private final TypeEq<C,__3<Tensor,__<__<__<µ,K>,Tensor>,Hom>,A,B>> _typeEq;
+        private final TypeEq<C,__3<Tensor,__<__<__<µ,K>,Tensor>,Hom>,B,A>> _typeEq;
 
-        public Exr(TypeEq<C, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, A, B>> typeEq) {
+        public Exr(TypeEq<C, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, B, A>> typeEq) {
             this._typeEq = typeEq;
         }
 
-        public TypeEq<C, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, A, B>> typeEq() {
+        public TypeEq<C, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, B,A>> typeEq() {
             return _typeEq;
         }
     }
