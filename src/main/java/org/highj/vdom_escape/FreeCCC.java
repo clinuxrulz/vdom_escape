@@ -28,6 +28,49 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
         R lift(__2<K,A,B> k);
     }
 
+    public static class CasesAdapter<R,K,Tensor,Hom,A,B> implements Cases<R,K,Tensor,Hom,A,B> {
+        private final R default_;
+        private CasesAdapter(R default_) {
+            this.default_ = default_;
+        }
+        @Override
+        public R eval(Eval<K, Tensor, Hom, ?, B, A> eval) {
+            return default_;
+        }
+        @Override
+        public R curry(Curry<K, Tensor, Hom, A, ?, ?, B> curry) {
+            return default_;
+        }
+        @Override
+        public R uncurry(Uncurry<K, Tensor, Hom, ?, ?, B, A> uncurry) {
+            return default_;
+        }
+        @Override
+        public R fork(Fork<K, Tensor, Hom, A, ?, ?, B> fork) {
+            return default_;
+        }
+        @Override
+        public R exl(Exl<K, Tensor, Hom, B, ?, A> exl) {
+            return default_;
+        }
+        @Override
+        public R exr(Exr<K, Tensor, Hom, B, ?, A> exr) {
+            return default_;
+        }
+        @Override
+        public R identity(Identity<A, B> identity) {
+            return default_;
+        }
+        @Override
+        public R dot(Dot<K, Tensor, Hom, A, ?, B> dot) {
+            return default_;
+        }
+        @Override
+        public R lift(__2<K, A, B> k) {
+            return default_;
+        }
+    }
+
     public abstract <R> R match(Cases<R,K,Tensor,Hom,A,B> cases);
 
     public static <K,Tensor,Hom,A,B> FreeCCC<K,Tensor,Hom,__3<Tensor,__<__<__<µ,K>,Tensor>,Hom>,__3<Hom,__<__<__<µ,K>,Tensor>,Hom>,A,B>,A>,B> eval() {
@@ -173,9 +216,7 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
             }
             @Override
             public Maybe<__2<K, A, B>> dot(Dot<K, Tensor, Hom, A, ?, B> dot) {
-                // TODO: Check for an apply this rule
-                // eval . (curry h `fork` g) = h . (id `fork` g)
-                throw new UnsupportedOperationException("TODO");
+                return reduceToCartesianDot(tensorDontDependOnK, cartesian, dot);
             }
             @Override
             public Maybe<__2<K, A, B>> lift(__2<K, A, B> k) {
@@ -229,6 +270,54 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
                         )
                 )
         );
+    }
+
+    private static <K,Tensor,Hom,A,B,C> Maybe<__2<K,A,B>> reduceToCartesianDot(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian, Dot<K,Tensor,Hom,A,C,B> dot) {
+        return Maybe.firstBiasedMonadPlus.mplus(
+            Maybe.monad.apply2(
+                (__2<K,C,B> k1) -> (__2<K,A,C> k2) ->
+                    cartesian.dot(k1, k2),
+                dot.k1().reduceToCartesian(tensorDontDependOnK, cartesian),
+                dot.k2().reduceToCartesian(tensorDontDependOnK, cartesian)
+            ),
+            // eval . (curry h `fork` g) = h . (id `fork` g)
+            dot.k1().match(new CasesAdapter<Maybe<__2<K,A,B>>,K,Tensor,Hom,C,B>(Maybe.Nothing()) {
+                @Override
+                public Maybe<__2<K, A, B>> eval(Eval<K, Tensor, Hom, ?, B, C> eval) {
+                    return reduceToCartesianDotK1Eval(tensorDontDependOnK, cartesian, dot, eval);
+                }
+            })
+        );
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D> Maybe<__2<K,A,B>> reduceToCartesianDotK1Eval(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian, Dot<K,Tensor,Hom,A,C,B> dot, Eval<K, Tensor, Hom, D, B, C> eval) {
+        // eval . (curry h `fork` g) = h . (id `fork` g)
+        return dot.k2().match(new CasesAdapter<Maybe<__2<K,A,B>>,K,Tensor,Hom,A,C>(Maybe.Nothing()) {
+            @Override
+            public Maybe<__2<K, A, B>> fork(Fork<K, Tensor, Hom, A, ?, ?, C> fork) {
+                return reduceToCartesianDotK1EvalK2Fork(tensorDontDependOnK, cartesian, dot, eval, fork);
+            }
+        });
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D,E,F> Maybe<__2<K,A,B>> reduceToCartesianDotK1EvalK2Fork(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian, Dot<K,Tensor,Hom,A,C,B> dot, Eval<K, Tensor, Hom, D, B, C> eval, Fork<K, Tensor, Hom, A, E, F, C> fork) {
+        // eval . (curry h `fork` g) = h . (id `fork` g)
+        return fork.k1().match(new CasesAdapter<Maybe<__2<K,A,B>>,K,Tensor,Hom,A,E>(Maybe.Nothing()) {
+            @Override
+            public Maybe<__2<K, A, B>> curry(Curry<K, Tensor, Hom, A, ?, ?, E> curry) {
+                return super.curry(curry);
+            }
+        });
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D,E,F,G,H> Maybe<__2<K,A,B>> reduceToCartesianDotK1EvalK2ForkK1Curry(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian, Dot<K,Tensor,Hom,A,C,B> dot, Eval<K, Tensor, Hom, D, B, C> eval, Fork<K, Tensor, Hom, A, E, F, C> fork, Curry<K, Tensor, Hom, A, G, H, E> curry) {
+        // eval . (curry h `fork` g) = h . (id `fork` g)
+        FreeCCC<K, Tensor, Hom, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, A, G>, H> x1 = curry.k();
+        FreeCCC<K, Tensor, Hom, A, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, A, F>> x2 = FreeCCC.fork(FreeCCC.identity(), fork.k2());
+        // TODO: Make this type safe.
+        //noinspection unchecked
+        FreeCCC<K,Tensor,Hom,A,B> x = FreeCCC.dot((FreeCCC) x1, (FreeCCC) x2);
+        return x.reduceToCartesian(tensorDontDependOnK, cartesian);
     }
 
     public static class Eval<K,Tensor,Hom,A,B,C> {
