@@ -4,6 +4,7 @@ import org.derive4j.hkt.*;
 import org.highj.data.Maybe;
 import org.highj.function.NF;
 
+@HktConfig(generateIn = "Hkt2")
 public abstract class LCData<Repr,Hom,A> implements __3<LCData.µ,Repr,Hom,A> {
     public static final class µ {}
 

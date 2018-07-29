@@ -187,7 +187,7 @@ public abstract class LC<Repr,Hom,A> {
         });
     }
 
-    public static <K, Tensor, Hom, U, A, B> Maybe<__2<K,A,B>> toCCC(CCC<K,Tensor,Hom> ccc, LC<K,Hom,__3<Hom,K,A,B>> lc) {
+    public static <K, Tensor, Hom, A, B> Maybe<__2<K,A,B>> toCCC(CCC<K,Tensor,Hom> ccc, LC<K,Hom,__3<Hom,K,A,B>> lc) {
         return LCData.toCCC(ccc, lc.toLCData());
     }
 }
