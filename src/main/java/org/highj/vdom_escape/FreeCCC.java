@@ -305,7 +305,7 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
         return fork.k1().match(new CasesAdapter<Maybe<__2<K,A,B>>,K,Tensor,Hom,A,E>(Maybe.Nothing()) {
             @Override
             public Maybe<__2<K, A, B>> curry(Curry<K, Tensor, Hom, A, ?, ?, E> curry) {
-                return super.curry(curry);
+                return reduceToCartesianDotK1EvalK2ForkK1Curry(tensorDontDependOnK, cartesian, dot, eval, fork, curry);
             }
         });
     }
