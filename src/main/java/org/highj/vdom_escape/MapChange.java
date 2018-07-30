@@ -1,37 +1,37 @@
 package org.highj.vdom_escape;
 
-public abstract class MapChange<K,A,DA> {
-    public interface Cases<R,K,A,DA> {
-        R add(K key, A a);
-        R remove(K key);
-        R update(K key, DA da);
+public abstract class MapChange<A,DA> {
+    public interface Cases<R,A,DA> {
+        R add(A a);
+        R remove();
+        R update(DA da);
     }
 
-    public abstract <R> R match(Cases<R,K,A,DA> cases);
+    public abstract <R> R match(Cases<R,A,DA> cases);
 
-    public static <K,A,DA> MapChange<K,A,DA> add(K key, A a) {
-        return new MapChange<K,A,DA>() {
+    public static <A,DA> MapChange<A,DA> add(A a) {
+        return new MapChange<A,DA>() {
             @Override
-            public <R> R match(Cases<R, K, A, DA> cases) {
-                return cases.add(key, a);
+            public <R> R match(Cases<R, A, DA> cases) {
+                return cases.add(a);
             }
         };
     }
 
-    public static <K,A,DA> MapChange<K,A,DA> remove(K key) {
-        return new MapChange<K,A,DA>() {
+    public static <A,DA> MapChange<A,DA> remove() {
+        return new MapChange<A,DA>() {
             @Override
-            public <R> R match(Cases<R, K, A, DA> cases) {
-                return cases.remove(key);
+            public <R> R match(Cases<R, A, DA> cases) {
+                return cases.remove();
             }
         };
     }
 
-    public static <K,A,DA> MapChange<K,A,DA> update(K key, DA da) {
-        return new MapChange<K,A,DA>() {
+    public static <A,DA> MapChange<A,DA> update(DA da) {
+        return new MapChange<A,DA>() {
             @Override
-            public <R> R match(Cases<R, K, A, DA> cases) {
-                return cases.update(key, da);
+            public <R> R match(Cases<R, A, DA> cases) {
+                return cases.update(da);
             }
         };
     }

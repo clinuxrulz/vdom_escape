@@ -35,14 +35,12 @@ public interface IncF<A,B> extends __2<IncF.µ,A,B> {
         );
     }
 
-    static <A,B,C> IncF<A,IMap<B,C>> constantIMap(IMap<B,C> b) {
+    static <A,B,C> IncF<A,IMap<B,C>> constantIMap(IMap<B,C> b, Delta<C,?> zeroDc) {
         return constant(
             b,
             Delta.<IMap<B,C>,MapChanges<B,C,?>>create(
-                (b2, db) -> {
-                    throw new UnsupportedOperationException("TODO");
-                },
-                MapChanges.create(Map.empty())
+                IMap::patch,
+                MapChanges.create(Map.empty(), zeroDc.patch())
             )
         );
     }
