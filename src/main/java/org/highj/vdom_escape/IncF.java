@@ -49,7 +49,5 @@ public interface IncF<A,B> extends __2<IncF.µ,A,B> {
 
     IncFCategory category = new IncFCategory() {};
 
-    static <U> IncFCartesian<U> cartesian() {
-        return new IncFCartesian<U>() {};
-    }
+    IncFCartesian cartesian = new IncFCartesian() {};
 }

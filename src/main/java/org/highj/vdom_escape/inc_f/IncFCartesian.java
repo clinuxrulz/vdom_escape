@@ -6,7 +6,7 @@ import org.highj.Hkt;
 import org.highj.data.tuple.T2;
 import org.highj.vdom_escape.*;
 
-public interface IncFCartesian<U> extends IncFCategory, Cartesian<IncF.µ, T2Tensor.µ> {
+public interface IncFCartesian extends IncFCategory, Cartesian<IncF.µ, T2Tensor.µ> {
 
     @Override
     default <A, C, D> __2<IncF.µ, A, __3<T2Tensor.µ, IncF.µ, C, D>> fork(__2<IncF.µ, A, C> ac, __2<IncF.µ, A, D> ad) {
