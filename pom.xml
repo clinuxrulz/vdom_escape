@@ -75,12 +75,20 @@
         <groupId>org.teavm</groupId>
         <artifactId>teavm-maven-plugin</artifactId>
         <version>${teavm.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.teavm</groupId>
+            <artifactId>teavm-classlib</artifactId>
+            <version>${teavm.version}</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>web-client</id>
             <goals>
               <goal>compile</goal>
             </goals>
+            <phase>process-classes</phase>
             <configuration>
               <!-- Directory where TeaVM should put generated files. This configuration conforms to the settings
                    of the WAR plugin -->
@@ -88,6 +96,7 @@
 
               <!-- Main class, containing static void main(String[]) -->
               <mainClass>org.highj.vdom_escape.Client</mainClass>
+              <mainPageIncluded>true</mainPageIncluded>
 
               <!-- Whether TeaVM should produce minified JavaScript. Can reduce JavaScript file size more than
                    two times -->
