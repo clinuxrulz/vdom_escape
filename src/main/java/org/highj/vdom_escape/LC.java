@@ -1,6 +1,7 @@
 package org.highj.vdom_escape;
 
 import org.derive4j.hkt.TypeEq;
+import org.derive4j.hkt.__;
 import org.derive4j.hkt.__2;
 import org.derive4j.hkt.__3;
 import org.highj.data.Maybe;
@@ -8,7 +9,9 @@ import org.highj.data.tuple.T2;
 
 import java.util.function.Function;
 
-public abstract class LC<Repr,Hom,A> {
+public abstract class LC<Repr,Hom,A> implements __3<LC.µ,Repr,Hom,A> {
+    public static final class µ {}
+
     public interface Cases<R,Repr,Hom,A> {
         R lam(Lam<Repr,Hom,?,?,A> lam);
         R ap(Ap<Repr,Hom,?,A> ap);
@@ -17,6 +20,10 @@ public abstract class LC<Repr,Hom,A> {
     }
 
     public abstract <R> R match(Cases<R,Repr,Hom,A> cases);
+
+    public static <Repr,Hom,A> LC<Repr,Hom,A> narrow(__<__<__<µ,Repr>,Hom>,A> a) {
+        return (LC<Repr,Hom,A>)a;
+    }
 
     public static <Repr,Hom,A,B> LC<Repr,Hom,__3<Hom,Repr,A,B>> lam(Function<LC<Repr,Hom,A>,LC<Repr,Hom,B>> f) {
         return new LC<Repr,Hom,__3<Hom,Repr,A,B>>() {

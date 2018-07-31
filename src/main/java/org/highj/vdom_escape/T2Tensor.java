@@ -21,7 +21,7 @@ public class T2Tensor<K,A,B> implements __3<T2Tensor.µ,K,A,B> {
         return _t;
     }
 
-    public static final FreeCCC.TensorDontDependOnK<µ> tensorDontDependOnK = new FreeCCC.TensorDontDependOnK<µ>() {
+    public static final TensorDontDependOnK<µ> tensorDontDependOnK = new TensorDontDependOnK<µ>() {
         @Override
         public <A2, B2, K1, K2> TypeEq<__3<µ, K1, A2, B2>, __3<µ, K2, A2, B2>> typeEq() {
             //noinspection unchecked

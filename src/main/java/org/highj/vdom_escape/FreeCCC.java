@@ -170,10 +170,6 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
         return new FreeCCCCCC<K,Tensor,Hom>() {};
     }
 
-    public interface TensorDontDependOnK<Tensor> {
-        <A,B,K1,K2> TypeEq<__3<Tensor,K1,A,B>,__3<Tensor,K2,A,B>> typeEq();
-    }
-
     public Maybe<__2<K,A,B>> reduceToCartesian(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian) {
         return match(new Cases<Maybe<__2<K,A,B>>,K,Tensor,Hom,A,B>() {
             @Override
