@@ -1,6 +1,7 @@
 package org.highj.vdom_escape;
 
 import org.derive4j.hkt.TypeEq;
+import org.derive4j.hkt.__;
 import org.derive4j.hkt.__3;
 import org.highj.data.tuple.T2;
 
@@ -15,6 +16,10 @@ public class T2Tensor<K,A,B> implements __3<T2Tensor.µ,K,A,B> {
 
     public static <K,A,B> T2Tensor<K,A,B> create(T2<A,B> t) {
         return new T2Tensor<>(t);
+    }
+
+    public static <K,A,B> T2Tensor<K,A,B> narrow(__<__<__<µ,K>,A>,B> a) {
+        return (T2Tensor<K,A,B>)a;
     }
 
     public T2<A, B> t() {
