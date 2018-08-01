@@ -20,11 +20,34 @@ public class IEl {
         throw new UnsupportedOperationException();
     }
 
-    public static <Hom,A,B> LC<__<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, Hom>, Hom, __3<T2Tensor.µ, __<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, Hom>, A, B>> t2(
-        LC<__<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, Hom>,Hom,A> a,
-        LC<__<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, Hom>,Hom,B> b
-    ) {
-        CCC<__<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, Hom>, T2Tensor.µ, Hom> ccc = FreeCCC.ccc();
-        return LC.ap(LC.ap(LC.lift(ccc.curry(ccc.identity())), a), b);
+    public static <A,B> ILC<__3<T2Tensor.µ, ILC.µ, A, B>> t2(ILC<A> a, ILC<B> b) {
+        CCC<__<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, PHom.µ>, T2Tensor.µ, PHom.µ> ccc = FreeCCC.ccc();
+        return ILC.narrow(
+            T2Tensor.tensorDontDependOnK
+                .<A, B, __<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, PHom.µ>, ILC.µ>typeEq()
+                .<ILC.µ>lift()
+                .coerce(
+                    ILC.ap(
+                        ILC.narrow(
+                            PHom.homDontDependOnK
+                                .<B, __3<T2Tensor.µ, __<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, PHom.µ>, A, B>, __<__<__<FreeCCC.µ, IncF.µ>, T2Tensor.µ>, PHom.µ>, ILC.µ>typeEq()
+                                .<ILC.µ>lift()
+                                .coerce(
+                                    ILC.ap(
+                                        ILC.liftFreeCCC(
+                                            FreeCCC.narrow(
+                                                ccc.curry(
+                                                    ccc.identity()
+                                                )
+                                            )
+                                        ),
+                                        a
+                                    )
+                                )
+                        ),
+                        b
+                    )
+                )
+        );
     }
 }
