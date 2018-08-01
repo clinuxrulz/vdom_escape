@@ -2,6 +2,7 @@ package org.highj.vdom_escape.dom;
 
 import org.derive4j.hkt.__;
 import org.derive4j.hkt.__3;
+import org.highj.data.Maybe;
 import org.highj.data.tuple.T2;
 import org.highj.vdom_escape.*;
 
@@ -64,8 +65,27 @@ public class IEl {
         }
         final Util util = new Util();
         util.incF2 = (Delta<__3<T2Tensor.µ, ILC.µ, Atomic<String>, __3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<String>>, __3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<Consumer<DomEvent>>>, IMap<Integer, Element>>>>,?> x1) -> {
-            // TODO: Finish this
-            throw new UnsupportedOperationException();
+            // TODO: Fix me, very error prone.
+            //noinspection unchecked
+            T2<Delta<Atomic<String>,Maybe<String>>,Delta<__3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<String>>, __3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<Consumer<DomEvent>>>, IMap<Integer, Element>>>,?>> x2 = (T2)x1.change();
+            //noinspection unchecked
+            T2<Delta<IMap<String,Atomic<String>>,MapChanges<String,Atomic<String>,Maybe<String>>>,Delta<__3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<Consumer<DomEvent>>>, IMap<Integer, Element>>,?>> x3 = (T2)x2._2().change();
+            //noinspection unchecked
+            T2<Delta<IMap<String,Atomic<Consumer<DomEvent>>>,MapChanges<String,Atomic<Consumer<DomEvent>>,Maybe<Consumer<DomEvent>>>>,Delta<IMap<Integer, Element>,?>> x4 = (T2)x3._2().change();
+            //noinspection unchecked
+            Delta<IMap<Integer, Element>,MapChanges<Integer,Element,ElementChanges>> x5 = (Delta)x4._2();
+            return T2.of(
+                Delta.create(
+                    Element::patch,
+                    ElementChanges.create(
+                        x2._1().change(),
+                        x3._1().change(),
+                        x4._1().change(),
+                        x5.change()
+                    )
+                ),
+                util.incF2
+            );
         };
         return (__3<T2Tensor.µ, ILC.µ, Atomic<String>, __3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<String>>, __3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<Consumer<DomEvent>>>, IMap<Integer, Element>>>> x1) -> {
             T2Tensor<ILC.µ, Atomic<String>, __3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<String>>, __3<T2Tensor.µ, ILC.µ, IMap<String, Atomic<Consumer<DomEvent>>>, IMap<Integer, Element>>>> x2 = T2Tensor.narrow(x1);

@@ -61,4 +61,14 @@ public class Element {
     public IMap<Integer, Element> children() {
         return _children;
     }
+
+    public Element patch(ElementChanges changes) {
+        return Element.create(
+            element(),
+            Atomic.create(changes.textChange().getOrElse(text().value())),
+            attributes().patch(changes.attributeChanges()),
+            handlers().patch(changes.handlerChanges()),
+            children().patch(changes.childrenChanges())
+        );
+    }
 }

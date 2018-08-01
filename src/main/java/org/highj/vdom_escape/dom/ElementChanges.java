@@ -32,4 +32,20 @@ public class ElementChanges {
     ) {
         return new ElementChanges(textChange, attributeChanges, handlersChanges, childrenChanges);
     }
+
+    public Maybe<String> textChange() {
+        return _textChange;
+    }
+
+    public MapChanges<String, Atomic<String>, Maybe<String>> attributeChanges() {
+        return _attributeChanges;
+    }
+
+    public MapChanges<String, Atomic<Consumer<DomEvent>>, Maybe<Consumer<DomEvent>>> handlerChanges() {
+        return _handlerChanges;
+    }
+
+    public MapChanges<Integer, Element, ElementChanges> childrenChanges() {
+        return _childrenChanges;
+    }
 }
