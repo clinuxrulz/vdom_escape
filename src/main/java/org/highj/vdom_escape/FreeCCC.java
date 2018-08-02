@@ -560,4 +560,46 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
             return _k2;
         }
     }
+
+    @Override
+    public String toString() {
+        return match(new Cases<String,K,Tensor,Hom,A,B>() {
+            @Override
+            public String eval(Eval<K, Tensor, Hom, ?, B, A> eval) {
+                return "eval";
+            }
+            @Override
+            public String curry(Curry<K, Tensor, Hom, A, ?, ?, B> curry) {
+                return "(curry " + curry.k().toString() + ")";
+            }
+            @Override
+            public String uncurry(Uncurry<K, Tensor, Hom, ?, ?, B, A> uncurry) {
+                return "(uncurry " + uncurry.k().toString() + ")";
+            }
+            @Override
+            public String fork(Fork<K, Tensor, Hom, A, ?, ?, B> fork) {
+                return "(" + fork.k1().toString() + " `fork` " + fork.k2().toString() + ")";
+            }
+            @Override
+            public String exl(Exl<K, Tensor, Hom, B, ?, A> exl) {
+                return "exl";
+            }
+            @Override
+            public String exr(Exr<K, Tensor, Hom, B, ?, A> exr) {
+                return "exr";
+            }
+            @Override
+            public String identity(Identity<A, B> identity) {
+                return "id";
+            }
+            @Override
+            public String dot(Dot<K, Tensor, Hom, A, ?, B> dot) {
+                return "(" + dot.k1().toString() + " . " + dot.k2().toString() + ")";
+            }
+            @Override
+            public String lift(__2<K, A, B> k) {
+                return "(lift ?)";
+            }
+        });
+    }
 }
