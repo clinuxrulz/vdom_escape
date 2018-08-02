@@ -87,7 +87,9 @@ public class ILC<A> implements __<ILC.µ,A> {
             .map(FreeCCC::narrow)
             .bind(
                 (FreeCCC<IncF.µ, T2Tensor.µ, PHom.µ, A, B> x) ->
-                    x.reduceToCartesian(T2Tensor.tensorDontDependOnK, IncF.cartesian)
+                    x
+                        .tryEliminateHom()
+                        .reduceToCartesian(T2Tensor.tensorDontDependOnK, IncF.cartesian)
             )
             .map(Hkt::asIncF);
     }
