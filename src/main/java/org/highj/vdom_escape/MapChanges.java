@@ -20,6 +20,10 @@ public class MapChanges<K,A,DA> {
         return _changes;
     }
 
+    public static <K,A,DA> MapChanges<K,A,DA> zero(F2<A,DA,A> elementPatch) {
+        return create(Map.empty(), elementPatch);
+    }
+
     public F2<A,DA,A> elementPatch() {
         return _elementPatch;
     }

@@ -48,4 +48,13 @@ public class ElementChanges {
     public MapChanges<Integer, Element, ElementChanges> childrenChanges() {
         return _childrenChanges;
     }
+
+    public static ElementChanges zero() {
+        return create(
+            Maybe.Nothing(),
+            MapChanges.zero(Atomic::patch),
+            MapChanges.zero(Atomic::patch),
+            MapChanges.zero(Element::patch)
+        );
+    }
 }

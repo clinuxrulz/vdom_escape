@@ -1,5 +1,7 @@
 package org.highj.vdom_escape;
 
+import org.highj.data.Maybe;
+
 /**
  * Atomic incremental values, the change structure of Atomic A is just Maybe A.
  * This is useful for primitive types, like int, double or string.
@@ -18,5 +20,9 @@ public class Atomic<A> {
 
     public A value() {
         return _value;
+    }
+
+    public Atomic<A> patch(Maybe<A> change) {
+        return Atomic.create(change.getOrElse(value()));
     }
 }
