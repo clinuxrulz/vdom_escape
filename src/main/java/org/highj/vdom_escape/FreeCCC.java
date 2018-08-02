@@ -170,6 +170,68 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
         return new FreeCCCCCC<K,Tensor,Hom>() {};
     }
 
+    public interface FreeCCCSubst<K,Tensor,Hom> {
+        <A,B> FreeCCC<K,Tensor,Hom,A,B> apply(FreeCCC<K,Tensor,Hom,A,B> x);
+    }
+
+    public FreeCCC<K,Tensor,Hom,A,B> subst(FreeCCCSubst<K,Tensor,Hom> fn) {
+        FreeCCC<K,Tensor,Hom,A,B> this_ = this;
+        return match(new Cases<FreeCCC<K,Tensor,Hom,A,B>,K,Tensor,Hom,A,B>() {
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> eval(Eval<K, Tensor, Hom, ?, B, A> eval) {
+                return fn.apply(this_);
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> curry(Curry<K, Tensor, Hom, A, ?, ?, B> curry) {
+                return fn.apply(substCurry(fn, curry));
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> uncurry(Uncurry<K, Tensor, Hom, ?, ?, B, A> uncurry) {
+                return fn.apply(substUncurry(fn, uncurry));
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> fork(Fork<K, Tensor, Hom, A, ?, ?, B> fork) {
+                return fn.apply(substFork(fn, fork));
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> exl(Exl<K, Tensor, Hom, B, ?, A> exl) {
+                return fn.apply(this_);
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> exr(Exr<K, Tensor, Hom, B, ?, A> exr) {
+                return fn.apply(this_);
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> identity(Identity<A, B> identity) {
+                return fn.apply(this_);
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> dot(Dot<K, Tensor, Hom, A, ?, B> dot) {
+                return fn.apply(substDot(fn, dot));
+            }
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> lift(__2<K, A, B> k) {
+                return fn.apply(this_);
+            }
+        });
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D> FreeCCC<K,Tensor,Hom,A,B> substCurry(FreeCCCSubst<K,Tensor,Hom> fn, Curry<K, Tensor, Hom, A, C, D, B> curry) {
+        return narrow(curry.typeEq().symm().<__<__<__<__<µ, K>, Tensor>, Hom>, A>>lift().coerce(FreeCCC.curry(fn.apply(curry.k()))));
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D> FreeCCC<K,Tensor,Hom,A,B> substUncurry(FreeCCCSubst<K,Tensor,Hom> fn, Uncurry<K, Tensor, Hom, C, D, B, A> uncurry) {
+        return narrow(uncurry.typeEq().symm().<__<__<__<µ, K>, Tensor>, Hom>, B>lift2().coerce(FreeCCC.uncurry(fn.apply(uncurry.k()))));
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D> FreeCCC<K,Tensor,Hom,A,B> substFork(FreeCCCSubst<K,Tensor,Hom> fn, Fork<K, Tensor, Hom, A, C, D, B> fork) {
+        return narrow(fork.typeEq().symm().<__<__<__<__<µ, K>, Tensor>, Hom>, A>>lift().coerce(FreeCCC.fork(fn.apply(fork.k1()), fn.apply(fork.k2()))));
+    }
+
+    private static <K,Tensor,Hom,A,B,C> FreeCCC<K,Tensor,Hom,A,B> substDot(FreeCCCSubst<K,Tensor,Hom> fn, Dot<K, Tensor, Hom, A, C, B> dot) {
+        return FreeCCC.dot(fn.apply(dot.k1()), fn.apply(dot.k2()));
+    }
+
     public Maybe<__2<K,A,B>> reduceToCartesian(TensorDontDependOnK<Tensor> tensorDontDependOnK, Cartesian<K,Tensor> cartesian) {
         return match(new Cases<Maybe<__2<K,A,B>>,K,Tensor,Hom,A,B>() {
             @Override
