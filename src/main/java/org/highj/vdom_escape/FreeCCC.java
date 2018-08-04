@@ -241,6 +241,8 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
             @Override
             public <A, B> FreeCCC<K, Tensor, Hom, A, B> apply(FreeCCC<K, Tensor, Hom, A, B> this_) {
                 // eval . (curry h `fork` g) = h . (id `fork` g)
+                // OR
+                // eval . (((curry h) . z) `fork` g) = h . (z `fork` g)
                 return this_.match(new CasesAdapter<FreeCCC<K,Tensor,Hom,A,B>,K,Tensor,Hom,A,B>(this_) {
                     @Override
                     public FreeCCC<K, Tensor, Hom, A, B> dot(Dot<K, Tensor, Hom, A, ?, B> dot) {
@@ -253,6 +255,8 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
 
     private static <K,Tensor,Hom,A,B,C> FreeCCC<K,Tensor,Hom,A,B> homEliminatorDot(FreeCCC<K,Tensor,Hom,A,B> this_, Dot<K, Tensor, Hom, A, C, B> dot) {
         // eval . (curry h `fork` g) = h . (id `fork` g)
+        // OR
+        // eval . (((curry h) . z) `fork` g) = h . (z `fork` g)
         return dot.k1().match(new CasesAdapter<FreeCCC<K,Tensor,Hom,A,B>,K,Tensor,Hom,C,B>(this_) {
             @Override
             public FreeCCC<K, Tensor, Hom, A, B> eval(Eval<K, Tensor, Hom, ?, B, C> eval) {
@@ -263,6 +267,8 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
 
     private static <K,Tensor,Hom,A,B,C,D> FreeCCC<K,Tensor,Hom,A,B> homEliminatorDotEval(FreeCCC<K,Tensor,Hom,A,B> this_, Dot<K, Tensor, Hom, A, C, B> dot, Eval<K, Tensor, Hom, D, B, C> eval) {
         // eval . (curry h `fork` g) = h . (id `fork` g)
+        // OR
+        // eval . (((curry h) . z) `fork` g) = h . (z `fork` g)
         return dot.k2().match(new CasesAdapter<FreeCCC<K,Tensor,Hom,A,B>,K,Tensor,Hom,A,C>(this_) {
             @Override
             public FreeCCC<K, Tensor, Hom, A, B> fork(Fork<K, Tensor, Hom, A, ?, ?, C> fork) {
@@ -273,12 +279,39 @@ public abstract class FreeCCC<K,Tensor,Hom,A,B> implements __5<FreeCCC.µ,K,Tens
 
     private static <K,Tensor,Hom,A,B,C,D,E,F> FreeCCC<K,Tensor,Hom,A,B> homEliminatorDotEvalFork(FreeCCC<K,Tensor,Hom,A,B> this_, Dot<K, Tensor, Hom, A, C, B> dot, Eval<K, Tensor, Hom, D, B, C> eval, Fork<K, Tensor, Hom, A, E, F, C> fork) {
         // eval . (curry h `fork` g) = h . (id `fork` g)
+        // OR
+        // eval . (((curry h) . z) `fork` g) = h . (z `fork` g)
         return fork.k1().match(new CasesAdapter<FreeCCC<K,Tensor,Hom,A,B>,K,Tensor,Hom,A,E>(this_) {
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> dot(Dot<K, Tensor, Hom, A, ?, E> dot2) {
+                return homEliminatorDotEvalForkDot(this_, dot, eval, fork, dot2);
+            }
             @Override
             public FreeCCC<K, Tensor, Hom, A, B> curry(Curry<K, Tensor, Hom, A, ?, ?, E> curry) {
                 return homEliminatorDotEvalForkCurry(this_, dot, eval, fork, curry);
             }
         });
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D,E,F,G> FreeCCC<K,Tensor,Hom,A,B> homEliminatorDotEvalForkDot(FreeCCC<K,Tensor,Hom,A,B> this_, Dot<K, Tensor, Hom, A, C, B> dot, Eval<K, Tensor, Hom, D, B, C> eval, Fork<K, Tensor, Hom, A, E, F, C> fork, Dot<K, Tensor, Hom, A, G, E> dot2) {
+        // eval . (((curry h) . z) `fork` g) = h . (z `fork` g)
+        return dot2.k1().match(new CasesAdapter<FreeCCC<K,Tensor,Hom,A,B>,K,Tensor,Hom,G,E>(this_) {
+            @Override
+            public FreeCCC<K, Tensor, Hom, A, B> curry(Curry<K, Tensor, Hom, G, ?, ?, E> curry) {
+                return homEliminatorDotEvalForkDotCurry(this_, dot, eval, fork, dot2, curry);
+            }
+        });
+    }
+
+    private static <K,Tensor,Hom,A,B,C,D,E,F,G,H,I> FreeCCC<K,Tensor,Hom,A,B> homEliminatorDotEvalForkDotCurry(FreeCCC<K,Tensor,Hom,A,B> this_, Dot<K, Tensor, Hom, A, C, B> dot, Eval<K, Tensor, Hom, D, B, C> eval, Fork<K, Tensor, Hom, A, E, F, C> fork, Dot<K, Tensor, Hom, A, G, E> dot2, Curry<K, Tensor, Hom, G, H, I, E> curry) {
+        // eval . (((curry h) . z) `fork` g) = h . (z `fork` g)
+        FreeCCC<K, Tensor, Hom, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, G, H>, I> h = curry.k();
+        FreeCCC<K, Tensor, Hom, A, G> z = dot2.k2();
+        FreeCCC<K, Tensor, Hom, A, F> g = fork.k2();
+        FreeCCC<K, Tensor, Hom, A, __3<Tensor, __<__<__<µ, K>, Tensor>, Hom>, G, F>> z_fork_g = FreeCCC.fork(z, g);
+        // TODO: Use TypeEqs to make this type safe.
+        //noinspection unchecked
+        return FreeCCC.dot((FreeCCC)h, (FreeCCC)z_fork_g);
     }
 
     private static <K,Tensor,Hom,A,B,C,D,E,F,G,H> FreeCCC<K,Tensor,Hom,A,B> homEliminatorDotEvalForkCurry(FreeCCC<K,Tensor,Hom,A,B> this_, Dot<K, Tensor, Hom, A, C, B> dot, Eval<K, Tensor, Hom, D, B, C> eval, Fork<K, Tensor, Hom, A, E, F, C> fork, Curry<K, Tensor, Hom, A, G, H, E> curry) {
